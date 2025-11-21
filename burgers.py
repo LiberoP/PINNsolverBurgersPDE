@@ -84,9 +84,9 @@ plt.scatter(
     t_b, x_b, c=u_b, marker="X", vmin=-1, vmax=1
 )  # color is uniform because u = 0 for x=+-1
 plt.scatter(t_r, x_r, c="r", marker=".", alpha=0.1)
-plt.xlabel("Time t")
-plt.ylabel("Position x")
-plt.title("Positions of collocation points and boundary data")
+plt.xlabel("Tempo t")
+plt.ylabel("Posizione x")
+plt.title("Posizione dei punti di training")
 
 plt.savefig('Xdata_burgers.pdf', bbox_inches='tight', dpi = 300)
 
@@ -124,7 +124,7 @@ def get_r(model, X_r):
         t, x = X_r[:, 0:1], X_r[:, 1:2]  # not just 0 and 1 in order to keep dimension
         tape.watch(t)  # gradient computed in t
         tape.watch(x)
-        u = model(tf.stack([t[:, 0], x[:, 0]], axis=1))  # WHY NOT model(X_r)) ?
+        u = model(tf.stack([t[:, 0], x[:, 0]], axis=1))
         u_x = tape.gradient(
             u, x
         )  # gradient of u with respect to x. In the with-as block because needed for second derivative because all gradient computations must happen inside
@@ -202,9 +202,9 @@ plt.scatter(
     t_b_t, x_b_t, c=u_b_t, marker="X", vmin=-1, vmax=1
 )  # color is uniform because u = 0 for x=+-1
 plt.scatter(t_r_t, x_r_t, c="r", marker=".", alpha=0.1)
-plt.xlabel("Time t")
-plt.ylabel("Position x")
-plt.title("TESTING - Positions of collocation points and boundary data")
+plt.xlabel("Tempo t")
+plt.ylabel("Posizione x")
+plt.title("Posizione dei punti di testing")
 plt.savefig('Xdata_burgers_t.pdf', bbox_inches='tight', dpi = 300)
 
 def compute_loss_t(model, X_r_t, X_data_t, u_data_t): # same but for testingb
@@ -274,11 +274,12 @@ ax = fig.add_subplot(
 ax.plot_surface(T, X, U, cmap="viridis")
 # type of color map (default is in one tone)
 ax.view_init(29, 29)  # pov, in degress up and to the side (rotated clockwise)
-ax.set_xlabel("Time t")
-ax.set_ylabel("Position x")
+ax.set_xlabel("Tempo t")
+ax.set_ylabel("Posizione x")
 ax.set_zlabel("$u_\\theta(t,x)$")
-ax.set_title("Solution to the Burgers' equation");
-plt.savefig('Burgers_Solution.pdf', bbox_inches = 'tight', dpi = 300);
+ax.set_title("Soluzione dell'equazione di Burgers")
+
+plt.savefig('Burgers_Solution.pdf', bbox_inches = 'tight', pad_inches=0.5, dpi = 300)
 
 fig = plt.figure(figsize=(9, 6))
 ax1 = fig.add_subplot(211)
@@ -288,7 +289,7 @@ ax1.semilogy(
 ax2 = fig.add_subplot(212, sharex=ax1)  
 ax2.semilogy(range(len(hist_t)), hist_t, 'r-') 
 
-ax1.set_xlabel("$n_{epoch}$")
-ax1.set_ylabel("$L_{training} (n_{epoch})$")
-ax2.set_ylabel("$L_{testing} (n_{epoch})$")
-
+ax1.set_xlabel("$T$")
+ax1.set_ylabel("$L_{training} (T)$")
+ax2.set_ylabel("$L_{testing} (T)$")
+plt.savefig('loss_evolution.pdf', bbox_inches='tight', dpi = 300)
