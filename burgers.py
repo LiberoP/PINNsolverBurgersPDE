@@ -90,6 +90,17 @@ plt.title("Posizione dei punti di training")
 
 plt.savefig('Xdata_burgers.pdf', bbox_inches='tight', dpi = 300)
 
+# standalone colorbar matching the plot's colormap and range
+fig, ax = plt.subplots(figsize=(1, 6))
+norm = plt.Normalize(vmin=-1, vmax=1)
+sm = plt.cm.ScalarMappable(cmap='viridis', norm=norm)
+sm.set_array([])
+cbar = plt.colorbar(sm, cax=ax)
+cbar.set_label('$u(t,x)$', rotation=270, labelpad=15)
+cbar.set_ticks([-1, -0.5, 0, 0.5, 1])
+
+plt.savefig('colorbar_burgers.pdf', bbox_inches='tight', dpi=300)
+
 def init_model(num_hidden_layers=8, num_neurons_per_layer=20):
     model = tf.keras.Sequential()
     model.add(tf.keras.Input(shape=(2,)))  # each input is of kind (t,x)
